@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../api";
+import "../styles/AdminLogin.css";
 
 export default function AdminLogin() {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -24,25 +25,29 @@ export default function AdminLogin() {
   };
 
   return (
-    <div style={{ padding: 50 }}>
-      <h2>Admin Login</h2>
+    <div className="login-wrapper">
+      <div className="login-card">
+        <h2>Admin Login</h2>
+        <p className="subtitle">Login to access admin dashboard</p>
 
-      <input
-        placeholder="Username"
-        onChange={(e) =>
-          setUser((prev) => ({ ...prev, username: e.target.value }))
-        }
-      />
+        <input
+          type="text"
+          placeholder="Username"
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, username: e.target.value }))
+          }
+        />
 
-      <input
-        placeholder="Password"
-        type="password"
-        onChange={(e) =>
-          setUser((prev) => ({ ...prev, password: e.target.value }))
-        }
-      />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, password: e.target.value }))
+          }
+        />
 
-      <button onClick={login}>Login</button>
+        <button onClick={login}>Login</button>
+      </div>
     </div>
   );
 }
