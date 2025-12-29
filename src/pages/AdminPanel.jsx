@@ -310,80 +310,55 @@ export default function AdminPanel() {
         </div>
       )}
 
-         {/* ================= COUNSELING LEADS ================= */}
+         {/* LEADS */}
       {activeTab === "leads" && (
         <div className="leads-container">
-
           <h2>Counseling Leads</h2>
 
-          {/* 🔍 Search + 📤 Export */}
-          <div className="search-export">
-            <input
-              className="search-input"
-              placeholder="Search by name / phone / city"
-              onChange={(e) => setSearch(e.target.value)}
-            />
+          <input
+            className="search-input"
+            placeholder="Search name / phone / city"
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-            <button
-              className="export-btn"
-              onClick={exportExcel}
-            >
-              📤 Export Excel
-            </button>
-          </div>
+          <button className="export-btn" onClick={exportExcel}>
+            Export Excel
+          </button>
 
-          {/* 📋 TABLE */}
-          <div style={{ overflowX: "auto" }}>
-            <table className="leads-table">
-              <thead>
+          <table className="leads-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Village</th>
+                <th>City</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredLeads.length === 0 && (
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Village</th>
-                  <th>City</th>
-                  <th>WhatsApp</th>
-                  <th>Date</th>
+                  <td colSpan="7">No data found</td>
                 </tr>
-              </thead>
+              )}
 
-              <tbody>
-                {filteredLeads.map((l, i) => (
-                  <tr key={l._id}>
-                    <td>{i + 1}</td>
-                    <td>{l.name}</td>
-                    <td>{l.phone}</td>
-                    <td>{l.village || "-"}</td>
-                    <td>{l.city || "-"}</td>
-                    <td>
-                      {l.whatsappSent ? (
-                        <span style={{ color: "green", fontWeight: "bold" }}>
-                          Sent
-                        </span>
-                      ) : (
-                        <span style={{ color: "red", fontWeight: "bold" }}>
-                          Pending
-                        </span>
-                      )}
-                    </td>
-                    <td>{new Date(l.createdAt).toLocaleString()}</td>
-                  </tr>
-                ))}
-
-                {filteredLeads.length === 0 && (
-                  <tr>
-                    <td className="no-leads" colSpan="7">
-                      No counseling leads found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
+              {filteredLeads.map((l, i) => (
+                <tr key={l._id || i}>
+                  <td>{i + 1}</td>
+                  <td>{l.name}</td>
+                  <td>{l.phone}</td>
+                  <td>{l.village || "-"}</td>
+                  <td>{l.city || "-"}</td>
+                  <td>{l.whatsappSent ? "Sent" : "Pending"}</td>
+                  <td>{new Date(l.createdAt).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
-
     </div>
   );
 }
