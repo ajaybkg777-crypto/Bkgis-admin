@@ -205,14 +205,26 @@ export default function AdminPanel() {
   };
 
   const exportExcel = () => {
-    const csv = 'Name,Phone,Village,City,WhatsApp,Date\n' + filteredLeads.map(l => `${l.name},${l.phone},${l.village || ''},${l.city || ''},${l.whatsappSent ? 'Sent' : 'Pending'},${new Date(l.createdAt).toLocaleString()}`).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const csv =
+      "Name,Phone,Village,City,WhatsApp,Date\n" +
+      filteredLeads
+        .map(
+          (l) =>
+            `${l.name || ""},${l.phone || ""},${l.village || ""},${
+              l.city || ""
+            },${l.whatsappSent ? "Sent" : "Pending"},${new Date(
+              l.createdAt
+            ).toLocaleString()}`
+        )
+        .join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'counseling_leads.csv';
+    a.download = "counseling_leads.csv";
     a.click();
-    window.URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url);
   };
 
   /* ================= UI ================= */
