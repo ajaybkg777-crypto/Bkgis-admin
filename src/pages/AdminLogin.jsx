@@ -12,7 +12,7 @@ export default function AdminLogin() {
     }
 
     try {
-      const { data } = await api.post("/admin/auth/login", {
+      const { data } = await api.post("admin/auth/login", {
         username: user.username,
         password: user.password,
       });
