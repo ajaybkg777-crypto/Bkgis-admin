@@ -205,26 +205,14 @@ export default function AdminPanel() {
   };
 
   const exportExcel = () => {
-    const csv =
-      "Name,Phone,Village,City,WhatsApp,Date\n" +
-      filteredLeads
-        .map(
-          (l) =>
-            `${l.name || ""},${l.phone || ""},${l.village || ""},${
-              l.city || ""
-            },${l.whatsappSent ? "Sent" : "Pending"},${new Date(
-              l.createdAt
-            ).toLocaleString()}`
-        )
-        .join("\n");
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const csv = 'Name,Phone,Village,City,WhatsApp,Date\n' + filteredLeads.map(l => `${l.name},${l.phone},${l.village || ''},${l.city || ''},${l.whatsappSent ? 'Sent' : 'Pending'},${new Date(l.createdAt).toLocaleString()}`).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "counseling_leads.csv";
+    a.download = 'counseling_leads.csv';
     a.click();
-    URL.revokeObjectURL(url);
+    window.URL.revokeObjectURL(url);
   };
 
   /* ================= UI ================= */
@@ -322,55 +310,80 @@ export default function AdminPanel() {
         </div>
       )}
 
-         {/* LEADS */}
+         {/* ================= COUNSELING LEADS ================= */}
       {activeTab === "leads" && (
         <div className="leads-container">
+
           <h2>Counseling Leads</h2>
 
-          <input
-            className="search-input"
-            placeholder="Search name / phone / city"
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          {/* 🔍 Search + 📤 Export */}
+          <div className="search-export">
+            <input
+              className="search-input"
+              placeholder="Search by name / phone / city"
+              onChange={(e) => setSearch(e.target.value)}
+            />
 
-          <button className="export-btn" onClick={exportExcel}>
-            Export Excel
-          </button>
+            <button
+              className="export-btn"
+              onClick={exportExcel}
+            >
+              📤 Export Excel
+            </button>
+          </div>
 
-          <table className="leads-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Village</th>
-                <th>City</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredLeads.length === 0 && (
+          {/* 📋 TABLE */}
+          <div style={{ overflowX: "auto" }}>
+            <table className="leads-table">
+              <thead>
                 <tr>
-                  <td colSpan="7">No data found</td>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Village</th>
+                  <th>City</th>
+                  <th>WhatsApp</th>
+                  <th>Date</th>
                 </tr>
-              )}
+              </thead>
 
-              {filteredLeads.map((l, i) => (
-                <tr key={l._id || i}>
-                  <td>{i + 1}</td>
-                  <td>{l.name}</td>
-                  <td>{l.phone}</td>
-                  <td>{l.village || "-"}</td>
-                  <td>{l.city || "-"}</td>
-                  <td>{l.whatsappSent ? "Sent" : "Pending"}</td>
-                  <td>{new Date(l.createdAt).toLocaleString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <tbody>
+                {filteredLeads.map((l, i) => (
+                  <tr key={l._id}>
+                    <td>{i + 1}</td>
+                    <td>{l.name}</td>
+                    <td>{l.phone}</td>
+                    <td>{l.village || "-"}</td>
+                    <td>{l.city || "-"}</td>
+                    <td>
+                      {l.whatsappSent ? (
+                        <span style={{ color: "green", fontWeight: "bold" }}>
+                          Sent
+                        </span>
+                      ) : (
+                        <span style={{ color: "red", fontWeight: "bold" }}>
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    <td>{new Date(l.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+
+                {filteredLeads.length === 0 && (
+                  <tr>
+                    <td className="no-leads" colSpan="7">
+                      No counseling leads found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
         </div>
       )}
+
     </div>
   );
 }
