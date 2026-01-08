@@ -14,7 +14,7 @@ export default function UploadExcel() {
     try {
       setStatus("Uploading...");
 
-      const res = await api.post("/admin/results/upload-excel", formData, {
+      const res = await api.post("/admin/results/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
