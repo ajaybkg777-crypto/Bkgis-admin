@@ -67,44 +67,32 @@ export default function AdminPanel() {
   };
 
   /* ================= GALLERY ================= */
-const uploadGallery = async () => {
-  if (!form.event || !form.category)
-    return alert("Event & Category required");
+  const uploadGallery = async () => {
+    if (!form.event || !form.category)
+      return alert("Event & Category required");
 
-  if (mediaType === "photo") {
-    if (!file) return alert("Photo required");
-  }
+    if (mediaType === "photo" && !file)
+      return alert("Photo required");
 
-  if (mediaType === "video") {
-    if (!form.videoLink)
-      return alert("YouTube link required");
-    if (!file)
-      return alert("Thumbnail image required");
-  }
+    if (mediaType === "video" && (!file || !form.videoLink))
+      return alert("Video link & thumbnail required");
 
-  const fd = new FormData();
-  fd.append("event", form.event);
-  fd.append("category", form.category.toLowerCase());
-  fd.append("type", mediaType);
-  fd.append("file", file); // image OR thumbnail
+    const fd = new FormData();
+    fd.append("event", form.event);
+    fd.append("category", form.category.toLowerCase());
+    fd.append("type", mediaType);
+    fd.append("file", file);
 
-  if (mediaType === "video") {
-    fd.append("videoLink", form.videoLink);
-  }
+    if (mediaType === "video") {
+      fd.append("videoLink", form.videoLink);
+    }
 
-  try {
     await api.post("/admin/gallery", fd);
-    alert("Gallery uploaded successfully");
-
-    // RESET
+    alert("Gallery Uploaded");
     setForm({});
     setFile(null);
     setMediaType("photo");
-  } catch (err) {
-    alert("Gallery upload failed");
-  }
-};
-
+  };
 
   /* ================= GENERAL INFO ================= */
   const addGeneralInfo = async () => {
@@ -257,74 +245,20 @@ const uploadGallery = async () => {
           </div>
 
           {/* GALLERY */}
-         <div className="section">
-  <h2>Upload Gallery</h2>
-
-  <input
-    className="input-field"
-    placeholder="Event Name"
-    onChange={(e) =>
-      setForm({ ...form, event: e.target.value })
-    }
-  />
-
-  <input
-    className="input-field"
-    placeholder="Category (junior / senior)"
-    onChange={(e) =>
-      setForm({ ...form, category: e.target.value })
-    }
-  />
-
-  {/* MEDIA TYPE TOGGLE */}
-  <div className="media-toggle">
-    <button
-      type="button"
-      className={mediaType === "photo" ? "active" : ""}
-      onClick={() => {
-        setMediaType("photo");
-        setFile(null);
-      }}
-    >
-      📸 Photo
-    </button>
-
-    <button
-      type="button"
-      className={mediaType === "video" ? "active" : ""}
-      onClick={() => {
-        setMediaType("video");
-        setFile(null);
-      }}
-    >
-      ▶️ YouTube Video
-    </button>
-  </div>
-
-  {/* YOUTUBE LINK (ONLY FOR VIDEO) */}
-  {mediaType === "video" && (
-    <input
-      className="input-field"
-      placeholder="Paste YouTube Video Link"
-      onChange={(e) =>
-        setForm({ ...form, videoLink: e.target.value })
-      }
-    />
-  )}
-
-  {/* FILE INPUT */}
-  <input
-    className="input-field"
-    type="file"
-    accept="image/*"
-    onChange={(e) => setFile(e.target.files[0])}
-  />
-
-  <button className="btn" onClick={uploadGallery}>
-    Upload
-  </button>
-</div>
-
+          <div className="section">
+            <h2>Upload Gallery</h2>
+            <input className="input-field" placeholder="Event" onChange={(e)=>setForm({...form,event:e.target.value})}/>
+            <input className="input-field" placeholder="Category (junior/senior)" onChange={(e)=>setForm({...form,category:e.target.value})}/>
+            <div className="media-toggle">
+              <button className={mediaType==="photo"?"active":""} onClick={()=>setMediaType("photo")}>Photo</button>
+              <button className={mediaType==="video"?"active":""} onClick={()=>setMediaType("video")}>Video</button>
+            </div>
+            {mediaType==="video" && (
+              <input className="input-field" placeholder="YouTube Link" onChange={(e)=>setForm({...form,videoLink:e.target.value})}/>
+            )}
+            <input type="file" onChange={(e)=>setFile(e.target.files[0])}/>
+            <button className="btn" onClick={uploadGallery}>Upload</button>
+          </div>
 
           {/* EVENTS */}
           <div className="section">
