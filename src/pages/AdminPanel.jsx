@@ -290,7 +290,55 @@ export default function AdminPanel() {
               ))}
             </div>
           </div>
-
+          <div className="section">
+            <h2>Add General Info</h2>
+            <input className="input-field" type="text" placeholder="Info" onChange={(e) => setForm({...form, info: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Detail" onChange={(e) => setForm({...form, detail: e.target.value})} />
+            <button className="btn" onClick={addGeneralInfo}>Add</button>
+          </div>
+          <div className="section">
+            <h2>Upload PDF</h2>
+            <input className="input-field" type="text" placeholder="Document Name" onChange={(e) => setForm({...form, docName: e.target.value})} />
+            <input className="input-field" type="file" onChange={(e) => setFile(e.target.files[0])} />
+            <button className="btn" onClick={uploadPDF}>Upload</button>
+          </div>
+          <div className="section">
+            <h2>Add Academic</h2>
+            <input className="input-field" type="text" placeholder="Title" onChange={(e) => setForm({...form, acTitle: e.target.value})} />
+            <input className="input-field" type="file" onChange={(e) => setFile(e.target.files[0])} />
+            <button className="btn" onClick={addAcademic}>Add</button>
+          </div>
+          <div className="section">
+            <h2>Add Result X</h2>
+            <input className="input-field" type="text" placeholder="Year" onChange={(e) => setForm({...form, xYear: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Registered" onChange={(e) => setForm({...form, xReg: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Passed" onChange={(e) => setForm({...form, xPass: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Percentage" onChange={(e) => setForm({...form, xPer: e.target.value})} />
+            <button className="btn" onClick={addResultX}>Add</button>
+          </div>
+          <div className="section">
+            <h2>Add Result XII</h2>
+            <input className="input-field" type="text" placeholder="Year" onChange={(e) => setForm({...form, xiiYear: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Registered" onChange={(e) => setForm({...form, xiiReg: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Passed" onChange={(e) => setForm({...form, xiiPass: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Percentage" onChange={(e) => setForm({...form, xiiPer: e.target.value})} />
+            <button className="btn" onClick={addResultXII}>Add</button>
+          </div>
+          <div className="section">
+            <h2>Add Staff</h2>
+            <input className="input-field" type="text" placeholder="Info" onChange={(e) => setForm({...form, staffInfo: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Detail" onChange={(e) => setForm({...form, staffDetail: e.target.value})} />
+            <button className="btn" onClick={addStaff}>Add</button>
+          </div>
+          <div className="section">
+            <h2>Add Infrastructure</h2>
+            <input className="input-field" type="text" placeholder="Info" onChange={(e) => setForm({...form, infraInfo: e.target.value})} />
+            <input className="input-field" type="text" placeholder="Detail" onChange={(e) => setForm({...form, infraDetail: e.target.value})} />
+            <button className="btn" onClick={addInfra}>Add</button>
+          </div>
+<div className="section">
+            <UploadExcel />
+          </div>
           <UploadExcel />
         </div>
       )}
