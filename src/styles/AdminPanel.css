@@ -1,108 +1,167 @@
 /* ================== GLOBAL ================== */
 .admin-panel {
-  padding: 30px;
+  padding: 32px;
   font-family: "Inter", "Segoe UI", sans-serif;
-  background: #f3f6fb;
+  background: linear-gradient(180deg, #f3f6fb, #eef2ff);
   min-height: 100vh;
 }
 
 /* ================== TABS ================== */
 .tabs {
   display: flex;
-  gap: 12px;
-  margin-bottom: 25px;
+  gap: 14px;
+  margin-bottom: 28px;
 }
 
 .tab-button {
-  padding: 12px 26px;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #0f2b63, #2b5893);
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+  transition: 0.3s ease;
+  box-shadow: 0 8px 20px rgba(15, 43, 99, 0.25);
 }
 
 .tab-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(15, 43, 99, 0.35);
 }
 
 /* ================== DASHBOARD GRID ================== */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 26px;
 }
 
 /* ================== CARD ================== */
 .section {
   background: #ffffff;
-  border-radius: 14px;
-  padding: 22px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-height: 360px;
-  transition: 0.3s ease;
+  transition: 0.35s ease;
+  border-top: 4px solid #0f2b63;
 }
 
 .section:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(15, 43, 99, 0.18);
 }
 
 .section h2 {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 600;
-  margin-bottom: 15px;
-  color: #1f2937;
-  border-left: 4px solid #6366f1;
-  padding-left: 10px;
+  margin-bottom: 18px;
+  color: #0f2b63;
 }
 
 /* ================== INPUTS ================== */
-.input-field {
+.input-field,
+select.input-field {
   width: 100%;
-  padding: 12px 1px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: 1px solid #d1d5db;
   font-size: 15px;
-  margin-bottom: 12px;
-  transition: 0.2s ease;
+  margin-bottom: 14px;
+  transition: 0.25s ease;
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: #0f2b63;
+  box-shadow: 0 0 0 3px rgba(15, 43, 99, 0.15);
 }
 
 textarea.input-field {
-  min-height: 90px;
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ================== MEDIA TYPE TOGGLE ================== */
+.media-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.media-toggle button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #0f2b63;
+  background: #fff;
+  color: #0f2b63;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.media-toggle button.active {
+  background: linear-gradient(135deg, #ffda79, #ffb84c);
+  color: #000;
+  border-color: #ffda79;
+}
+
+/* ================== FILE INPUT ================== */
+input[type="file"] {
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px dashed #c7d2fe;
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+/* ================== VIDEO PREVIEW ================== */
+.video-preview {
+  position: relative;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+}
+
+.video-preview img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.video-preview .play-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.45);
 }
 
 /* ================== BUTTONS ================== */
 .btn {
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  padding: 13px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
   border: none;
   color: white;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.25s;
+  transition: 0.3s ease;
   margin-top: auto;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.45);
 }
 
 /* ================== EVENTS ================== */
@@ -112,58 +171,60 @@ textarea.input-field {
 
 .event-item {
   background: #f9fafb;
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .delete-btn {
-  background: #ef4444;
+  background: #dc2626;
   color: #fff;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .delete-btn:hover {
-  background: #dc2626;
+  background: #b91c1c;
 }
 
 /* ================== LEADS ================== */
 .leads-container {
-  background: white;
-  border-radius: 14px;
-  padding: 25px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
 .leads-container h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  color: #0f2b63;
 }
 
+/* ================== SEARCH + EXPORT ================== */
 .search-export {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
 .search-input {
   flex: 1;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #d1d5db;
 }
 
 .export-btn {
-  background: #16a34a;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
   color: white;
-  padding: 12px 18px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
   border: none;
   font-weight: 600;
 }
@@ -179,7 +240,7 @@ textarea.input-field {
 }
 
 .leads-table th {
-  background: #4f46e5;
+  background: #0f2b63;
   color: white;
   padding: 12px;
 }
@@ -190,12 +251,12 @@ textarea.input-field {
 }
 
 .leads-table tr:hover {
-  background: #f9fafb;
+  background: #f8fafc;
 }
 
 .no-leads {
   text-align: center;
-  padding: 20px;
+  padding: 22px;
   color: #6b7280;
 }
 
