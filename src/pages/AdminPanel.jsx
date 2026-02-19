@@ -250,9 +250,23 @@ export default function AdminPanel() {
             <input className="input-field" placeholder="Event" onChange={(e)=>setForm({...form,event:e.target.value})}/>
             <input className="input-field" placeholder="Category (junior/senior)" onChange={(e)=>setForm({...form,category:e.target.value})}/>
             <div className="media-toggle">
-              <button className={mediaType==="photo"?"active":""} onClick={()=>setMediaType("photo")}>Photo</button>
-              <button className={mediaType==="video"?"active":""} onClick={()=>setMediaType("video")}>Video</button>
-            </div>
+  <button
+    type="button"
+    className={mediaType === "photo" ? "active" : ""}
+    onClick={() => setMediaType("photo")}
+  >
+    📸 Photo
+  </button>
+
+  <button
+    type="button"
+    className={mediaType === "video" ? "active" : ""}
+    onClick={() => setMediaType("video")}
+  >
+    ▶ Video
+  </button>
+</div>
+
             {mediaType==="video" && (
               <input className="input-field" placeholder="YouTube Link" onChange={(e)=>setForm({...form,videoLink:e.target.value})}/>
             )}
