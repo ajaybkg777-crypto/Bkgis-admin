@@ -27,14 +27,14 @@
   background: #143a86;
 }
 
-/* ========== DASHBOARD GRID (4 PER ROW) ========== */
+/* ========== DASHBOARD GRID ========== */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
 
-/* ========== CARD ========== */
+/* ========== CARD / SECTION ========== */
 .section {
   background: #ffffff;
   border-radius: 12px;
@@ -101,7 +101,7 @@ input[type="file"] {
   margin-bottom: 12px;
 }
 
-/* ========== BUTTON ========== */
+/* ========== BUTTONS ========== */
 .btn {
   padding: 10px;
   background: #ef4444;
@@ -141,7 +141,7 @@ input[type="file"] {
   cursor: pointer;
 }
 
-/* ========== LEADS ========== */
+/* ========== LEADS SECTION ========== */
 .leads-container {
   background: #ffffff;
   border-radius: 12px;
