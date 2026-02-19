@@ -339,7 +339,7 @@ export default function AdminPanel() {
 <div className="section">
             <UploadExcel />
           </div>
-          <UploadExcel />
+         
         </div>
       )}
 
