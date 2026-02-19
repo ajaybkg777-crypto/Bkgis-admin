@@ -6,17 +6,18 @@ import "../styles/AdminPanel.css";
 export default function AdminPanel() {
   const token = localStorage.getItem("token");
 
+  /* ================= AUTH ================= */
+  if (!token) return <h2>Unauthorized</h2>;
+
   /* ================= STATES ================= */
   const [form, setForm] = useState({});
   const [file, setFile] = useState(null);
-  const [mediaType, setMediaType] = useState("photo"); // photo | video
+  const [mediaType, setMediaType] = useState("photo");
 
   const [events, setEvents] = useState([]);
   const [leads, setLeads] = useState([]);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [search, setSearch] = useState("");
-
-  if (!token) return <h2>Unauthorized</h2>;
 
   /* ================= LOAD EVENTS ================= */
   const loadEvents = async () => {
@@ -24,7 +25,7 @@ export default function AdminPanel() {
       const res = await api.get("/admin/calendar");
       setEvents(res.data || []);
     } catch (err) {
-      console.error("Calendar fetch error:", err);
+      console.error(err);
     }
   };
 
@@ -33,8 +34,8 @@ export default function AdminPanel() {
     try {
       const res = await api.get("/admin/counseling");
       setLeads(res.data || []);
-    } catch (err) {
-      alert("Failed to load counseling leads");
+    } catch {
+      alert("Failed to load leads");
     }
   };
 
@@ -59,17 +60,13 @@ export default function AdminPanel() {
     fd.append("body", form.body);
     if (file) fd.append("attachments", file);
 
-    try {
-      await api.post("/admin/announcements", fd);
-      alert("Announcement Added");
-      setForm({});
-      setFile(null);
-    } catch {
-      alert("Failed to add announcement");
-    }
+    await api.post("/admin/announcements", fd);
+    alert("Announcement Added");
+    setForm({});
+    setFile(null);
   };
 
-  /* ================= GALLERY (PHOTO / VIDEO) ================= */
+  /* ================= GALLERY ================= */
   const uploadGallery = async () => {
     if (!form.event || !form.category)
       return alert("Event & Category required");
@@ -90,43 +87,110 @@ export default function AdminPanel() {
       fd.append("videoLink", form.videoLink);
     }
 
-    try {
-      await api.post("/admin/gallery", fd);
-      alert("Gallery uploaded successfully");
-      setForm({});
-      setFile(null);
-      setMediaType("photo");
-    } catch {
-      alert("Gallery upload failed");
-    }
+    await api.post("/admin/gallery", fd);
+    alert("Gallery Uploaded");
+    setForm({});
+    setFile(null);
+    setMediaType("photo");
+  };
+
+  /* ================= GENERAL INFO ================= */
+  const addGeneralInfo = async () => {
+    if (!form.info || !form.detail) return alert("Fields required");
+
+    await api.post("/admin/disclosures/general", {
+      info: form.info,
+      detail: form.detail,
+    });
+
+    alert("General Info Added");
+    setForm({});
+  };
+
+  /* ================= PDF ================= */
+  const uploadPDF = async () => {
+    if (!form.docName || !file) return alert("Fields required");
+
+    const fd = new FormData();
+    fd.append("name", form.docName);
+    fd.append("pdf", file);
+
+    await api.post("/admin/disclosures/documents", fd);
+    alert("PDF Uploaded");
+    setForm({});
+    setFile(null);
+  };
+
+  /* ================= ACADEMIC ================= */
+  const addAcademic = async () => {
+    if (!form.acTitle || !file) return alert("Fields required");
+
+    const fd = new FormData();
+    fd.append("title", form.acTitle);
+    fd.append("pdf", file);
+
+    await api.post("/admin/disclosures/academic", fd);
+    alert("Academic Added");
+    setForm({});
+    setFile(null);
+  };
+
+  /* ================= RESULTS ================= */
+  const addResultX = async () => {
+    await api.post("/admin/disclosures/resultX", {
+      year: form.xYear,
+      registered: form.xReg,
+      passed: form.xPass,
+      percentage: form.xPer,
+    });
+    alert("Result X Added");
+  };
+
+  const addResultXII = async () => {
+    await api.post("/admin/disclosures/resultXII", {
+      year: form.xiiYear,
+      registered: form.xiiReg,
+      passed: form.xiiPass,
+      percentage: form.xiiPer,
+    });
+    alert("Result XII Added");
+  };
+
+  /* ================= STAFF / INFRA ================= */
+  const addStaff = async () => {
+    await api.post("/admin/disclosures/staff", {
+      info: form.staffInfo,
+      detail: form.staffDetail,
+    });
+    alert("Staff Added");
+  };
+
+  const addInfra = async () => {
+    await api.post("/admin/disclosures/infra", {
+      info: form.infraInfo,
+      detail: form.infraDetail,
+    });
+    alert("Infrastructure Added");
   };
 
   /* ================= EVENTS ================= */
   const addEvent = async () => {
-    try {
-      await api.post("/admin/calendar", {
-        title: form.eventTitle,
-        description: form.eventDesc,
-        date: form.eventDate,
-      });
-      alert("Event Added");
-      loadEvents();
-    } catch {
-      alert("Failed to add event");
-    }
+    await api.post("/admin/calendar", {
+      title: form.eventTitle,
+      description: form.eventDesc,
+      date: form.eventDate,
+    });
+    alert("Event Added");
+    loadEvents();
   };
 
   const deleteEvent = async (id) => {
-    try {
-      await api.delete(`/admin/calendar/${id}`);
-      alert("Event Deleted");
-      loadEvents();
-    } catch {
-      alert("Failed to delete event");
-    }
+    await api.delete(`/admin/calendar/${id}`);
+    alert("Event Deleted");
+    loadEvents();
   };
 
-  /* ================= EXPORT LEADS ================= */
+  /* ================= EXPORT ================= */
   const exportExcel = () => {
     const csv =
       "Name,Phone,Village,City,WhatsApp,Date\n" +
@@ -140,12 +204,12 @@ export default function AdminPanel() {
         .join("\n");
 
     const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = "counseling_leads.csv";
     a.click();
-    window.URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url);
   };
 
   /* ================= UI ================= */
@@ -170,127 +234,44 @@ export default function AdminPanel() {
       {/* ================= DASHBOARD ================= */}
       {activeTab === "dashboard" && (
         <div className="dashboard">
+
           {/* ANNOUNCEMENT */}
           <div className="section">
             <h2>Upload Announcement</h2>
-            <input
-              className="input-field"
-              placeholder="Title"
-              onChange={(e) =>
-                setForm({ ...form, title: e.target.value })
-              }
-            />
-            <textarea
-              className="input-field"
-              placeholder="Body"
-              onChange={(e) =>
-                setForm({ ...form, body: e.target.value })
-              }
-            />
-            <input
-              className="input-field"
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <button className="btn" onClick={uploadAnnouncement}>
-              Add Announcement
-            </button>
+            <input className="input-field" placeholder="Title" onChange={(e)=>setForm({...form,title:e.target.value})}/>
+            <textarea className="input-field" placeholder="Body" onChange={(e)=>setForm({...form,body:e.target.value})}/>
+            <input type="file" onChange={(e)=>setFile(e.target.files[0])}/>
+            <button className="btn" onClick={uploadAnnouncement}>Upload</button>
           </div>
 
           {/* GALLERY */}
           <div className="section">
             <h2>Upload Gallery</h2>
-
-            <input
-              className="input-field"
-              placeholder="Event"
-              onChange={(e) =>
-                setForm({ ...form, event: e.target.value })
-              }
-            />
-
-            <input
-              className="input-field"
-              placeholder="Category (junior / senior)"
-              onChange={(e) =>
-                setForm({ ...form, category: e.target.value })
-              }
-            />
-
+            <input className="input-field" placeholder="Event" onChange={(e)=>setForm({...form,event:e.target.value})}/>
+            <input className="input-field" placeholder="Category (junior/senior)" onChange={(e)=>setForm({...form,category:e.target.value})}/>
             <div className="media-toggle">
-              <button
-                className={mediaType === "photo" ? "active" : ""}
-                onClick={() => setMediaType("photo")}
-              >
-                📸 Photo
-              </button>
-              <button
-                className={mediaType === "video" ? "active" : ""}
-                onClick={() => setMediaType("video")}
-              >
-                🎥 Video
-              </button>
+              <button className={mediaType==="photo"?"active":""} onClick={()=>setMediaType("photo")}>Photo</button>
+              <button className={mediaType==="video"?"active":""} onClick={()=>setMediaType("video")}>Video</button>
             </div>
-
-            {mediaType === "video" && (
-              <input
-                className="input-field"
-                placeholder="YouTube Video Link"
-                onChange={(e) =>
-                  setForm({ ...form, videoLink: e.target.value })
-                }
-              />
+            {mediaType==="video" && (
+              <input className="input-field" placeholder="YouTube Link" onChange={(e)=>setForm({...form,videoLink:e.target.value})}/>
             )}
-
-            <input
-              className="input-field"
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-
-            <button className="btn" onClick={uploadGallery}>
-              Upload Gallery
-            </button>
+            <input type="file" onChange={(e)=>setFile(e.target.files[0])}/>
+            <button className="btn" onClick={uploadGallery}>Upload</button>
           </div>
 
           {/* EVENTS */}
           <div className="section">
             <h2>Add Event</h2>
-            <input
-              className="input-field"
-              placeholder="Title"
-              onChange={(e) =>
-                setForm({ ...form, eventTitle: e.target.value })
-              }
-            />
-            <textarea
-              className="input-field"
-              placeholder="Description"
-              onChange={(e) =>
-                setForm({ ...form, eventDesc: e.target.value })
-              }
-            />
-            <input
-              className="input-field"
-              type="date"
-              onChange={(e) =>
-                setForm({ ...form, eventDate: e.target.value })
-              }
-            />
-            <button className="btn" onClick={addEvent}>
-              Add Event
-            </button>
-
+            <input className="input-field" placeholder="Title" onChange={(e)=>setForm({...form,eventTitle:e.target.value})}/>
+            <textarea className="input-field" placeholder="Description" onChange={(e)=>setForm({...form,eventDesc:e.target.value})}/>
+            <input type="date" onChange={(e)=>setForm({...form,eventDate:e.target.value})}/>
+            <button className="btn" onClick={addEvent}>Add</button>
             <div className="events-list">
-              {events.map((e) => (
-                <div className="event-item" key={e._id}>
-                  {e.title}
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteEvent(e._id)}
-                  >
-                    Delete
-                  </button>
+              {events.map(ev=>(
+                <div className="event-item" key={ev._id}>
+                  {ev.title}
+                  <button className="delete-btn" onClick={()=>deleteEvent(ev._id)}>Delete</button>
                 </div>
               ))}
             </div>
@@ -304,59 +285,28 @@ export default function AdminPanel() {
       {activeTab === "leads" && (
         <div className="leads-container">
           <h2>Counseling Leads</h2>
-
           <div className="search-export">
-            <input
-              className="search-input"
-              placeholder="Search name / phone / city"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button className="export-btn" onClick={exportExcel}>
-              Export Excel
-            </button>
+            <input className="search-input" placeholder="Search..." onChange={(e)=>setSearch(e.target.value)}/>
+            <button className="export-btn" onClick={exportExcel}>Export Excel</button>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table className="leads-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Village</th>
-                  <th>City</th>
-                  <th>WhatsApp</th>
-                  <th>Date</th>
+          <table className="leads-table">
+            <thead>
+              <tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Status</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+              {filteredLeads.map((l,i)=>(
+                <tr key={l._id}>
+                  <td>{i+1}</td>
+                  <td>{l.name}</td>
+                  <td>{l.phone}</td>
+                  <td>{l.city||"-"}</td>
+                  <td>{l.whatsappSent?"Sent":"Pending"}</td>
+                  <td>{new Date(l.createdAt).toLocaleString()}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredLeads.map((l, i) => (
-                  <tr key={l._id}>
-                    <td>{i + 1}</td>
-                    <td>{l.name}</td>
-                    <td>{l.phone}</td>
-                    <td>{l.village || "-"}</td>
-                    <td>{l.city || "-"}</td>
-                    <td>
-                      {l.whatsappSent ? (
-                        <span style={{ color: "green" }}>Sent</span>
-                      ) : (
-                        <span style={{ color: "red" }}>Pending</span>
-                      )}
-                    </td>
-                    <td>{new Date(l.createdAt).toLocaleString()}</td>
-                  </tr>
-                ))}
-                {filteredLeads.length === 0 && (
-                  <tr>
-                    <td colSpan="7" className="no-leads">
-                      No counseling leads found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
