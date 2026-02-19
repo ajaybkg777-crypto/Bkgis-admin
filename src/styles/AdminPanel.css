@@ -65,8 +65,8 @@
 
 /* ================== INPUTS ================== */
 .input-field {
-   display: flex;
-  width: 80%;
+  
+  width: 90%;
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
