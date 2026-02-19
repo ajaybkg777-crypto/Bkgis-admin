@@ -2,7 +2,7 @@
 .admin-panel {
   padding: 24px;
   font-family: "Inter", "Segoe UI", sans-serif;
-  background: #f5f7fb;
+  background: #f4f6fb;
   min-height: 100vh;
 }
 
@@ -15,7 +15,7 @@
 
 .tab-button {
   padding: 10px 22px;
-  background: #1e3a8a;
+  background: #0f2b63;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -24,14 +24,14 @@
 }
 
 .tab-button:hover {
-  background: #1d4ed8;
+  background: #143a86;
 }
 
-/* ========== DASHBOARD GRID (4 CARDS) ========== */
+/* ========== DASHBOARD GRID (4 PER ROW) ========== */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 18px;
 }
 
 /* ========== CARD ========== */
@@ -41,13 +41,13 @@
   padding: 18px;
   display: flex;
   flex-direction: column;
-  border-top: 4px solid #1e3a8a;
+  border-top: 4px solid #0f2b63;
 }
 
 .section h2 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   margin-bottom: 14px;
-  color: #1e3a8a;
+  color: #0f2b63;
 }
 
 /* ========== INPUTS ========== */
@@ -62,7 +62,7 @@
 
 .input-field:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #0f2b63;
 }
 
 textarea.input-field {
@@ -80,15 +80,15 @@ textarea.input-field {
   flex: 1;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #1e3a8a;
+  border: 1px solid #0f2b63;
   background: #fff;
-  color: #1e3a8a;
+  color: #0f2b63;
   font-weight: 600;
   cursor: pointer;
 }
 
 .media-toggle button.active {
-  background: #fde68a;
+  background: #ffda79;
   color: #000;
 }
 
@@ -97,16 +97,16 @@ input[type="file"] {
   padding: 8px;
   border-radius: 8px;
   border: 1px dashed #94a3b8;
-  background: #f8fafc;
+  background: #f9fafb;
   margin-bottom: 12px;
 }
 
 /* ========== BUTTON ========== */
 .btn {
-  padding: 11px;
+  padding: 10px;
   background: #ef4444;
   border: none;
-  color: white;
+  color: #fff;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
@@ -129,7 +129,7 @@ input[type="file"] {
   margin-bottom: 6px;
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .delete-btn {
@@ -141,7 +141,7 @@ input[type="file"] {
   cursor: pointer;
 }
 
-/* ========== LEADS SECTION ========== */
+/* ========== LEADS ========== */
 .leads-container {
   background: #ffffff;
   border-radius: 12px;
@@ -168,7 +168,6 @@ input[type="file"] {
   border-radius: 8px;
   border: none;
   font-weight: 600;
-  cursor: pointer;
 }
 
 /* ========== TABLE ========== */
@@ -178,16 +177,16 @@ input[type="file"] {
 }
 
 .leads-table th {
-  background: #1e3a8a;
-  color: white;
+  background: #0f2b63;
+  color: #fff;
   padding: 10px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .leads-table td {
   padding: 10px;
   border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 /* ========== RESPONSIVE ========== */
