@@ -63,8 +63,7 @@
 }
 
 /* ================== INPUTS ================== */
-.input-field,
-select.input-field {
+.input-field {
   width: 100%;
   padding: 12px 14px;
   border-radius: 10px;
@@ -72,6 +71,10 @@ select.input-field {
   font-size: 15px;
   margin-bottom: 14px;
   transition: 0.25s ease;
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
 }
 
 .input-field:focus {
@@ -97,11 +100,16 @@ textarea.input-field {
   padding: 10px;
   border-radius: 10px;
   border: 2px solid #0f2b63;
-  background: #fff;
+  background: #ffffff;
   color: #0f2b63;
   font-weight: 600;
   cursor: pointer;
   transition: 0.25s ease;
+}
+
+.media-toggle button:hover {
+  background: rgba(15, 43, 99, 0.06);
+  transform: scale(1.03);
 }
 
 .media-toggle button.active {
@@ -112,11 +120,18 @@ textarea.input-field {
 
 /* ================== FILE INPUT ================== */
 input[type="file"] {
-  padding: 8px;
+  padding: 10px;
   border-radius: 10px;
-  border: 1px dashed #c7d2fe;
+  border: 2px dashed #c7d2fe;
   background: #f8fafc;
   cursor: pointer;
+  margin-bottom: 14px;
+  transition: 0.25s ease;
+}
+
+input[type="file"]:hover {
+  background: #eef2ff;
+  border-color: #0f2b63;
 }
 
 /* ================== VIDEO PREVIEW ================== */
@@ -145,7 +160,7 @@ input[type="file"] {
   background: rgba(0, 0, 0, 0.45);
 }
 
-/* ================== BUTTONS ================== */
+/* ================== BUTTON ================== */
 .btn {
   width: 100%;
   padding: 13px;
@@ -164,9 +179,15 @@ input[type="file"] {
   box-shadow: 0 10px 24px rgba(239, 68, 68, 0.45);
 }
 
+.btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 /* ================== EVENTS ================== */
 .events-list {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .event-item {
@@ -186,6 +207,7 @@ input[type="file"] {
   padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.25s ease;
 }
 
 .delete-btn:hover {
@@ -227,6 +249,7 @@ input[type="file"] {
   border-radius: 10px;
   border: none;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .export-btn:hover {
