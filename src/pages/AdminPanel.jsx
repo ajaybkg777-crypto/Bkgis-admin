@@ -8,11 +8,6 @@ export default function AdminPanel() {
   if (!token) return <h2>Unauthorized</h2>;
 
   const [form, setForm] = useState({});
-  const [tcForm, setTcForm] = useState({
-    studentName: "",
-    fatherName: "",
-    scholarNumber: "",
-  });
   const [announcementFile, setAnnouncementFile] = useState(null);
   const [galleryFile, setGalleryFile] = useState(null);
   const [documentFile, setDocumentFile] = useState(null);
@@ -32,7 +27,6 @@ export default function AdminPanel() {
   const [disclosure, setDisclosure] = useState({ documents: [], academic: [] });
 
   const updateForm = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
-  const updateTCForm = (key, value) => setTcForm((prev) => ({ ...prev, [key]: value }));
   const getErrorMessage = (error, fallback) => error?.response?.data?.message || error?.response?.data?.error || fallback;
 
   const loadEvents = async () => setEvents((await api.get("/admin/calendar")).data || []);
@@ -178,21 +172,17 @@ export default function AdminPanel() {
   };
 
   const uploadTC = async () => {
-    if (!tcForm.studentName || !tcForm.fatherName || !tcForm.scholarNumber || !tcFile) {
-      return alert("Student name, father name, scholar number and PDF are required");
-    }
+    if (!tcFile) return alert("PDF is required");
+
     const fd = new FormData();
-    fd.append("studentName", tcForm.studentName);
-    fd.append("fatherName", tcForm.fatherName);
-    fd.append("scholarNumber", tcForm.scholarNumber);
     fd.append("pdf", tcFile);
     try {
-      await api.post("/admin/tc", fd);
-      setTcForm({ studentName: "", fatherName: "", scholarNumber: "" });
+      const { data } = await api.post("/admin/tc", fd);
       setTcFile(null);
       if (tcFileInputRef.current) tcFileInputRef.current.value = "";
       loadTCRecords();
-      alert("TC uploaded");
+      const record = data?.record;
+      alert(record ? `TC uploaded: ${record.studentName} | Scholar No: ${record.scholarNumber}` : "TC uploaded");
     } catch (error) {
       alert(getErrorMessage(error, "Failed to upload TC"));
     }
@@ -476,9 +466,6 @@ export default function AdminPanel() {
 
           <div className="section">
             <h2>Upload Transfer Certificate</h2>
-            <input className="input-field" type="text" placeholder="Student Name" value={tcForm.studentName} onChange={(e) => updateTCForm("studentName", e.target.value)} />
-            <input className="input-field" type="text" placeholder="Father Name" value={tcForm.fatherName} onChange={(e) => updateTCForm("fatherName", e.target.value)} />
-            <input className="input-field" type="text" placeholder="Scholar Number" value={tcForm.scholarNumber} onChange={(e) => updateTCForm("scholarNumber", e.target.value)} />
             <input ref={tcFileInputRef} type="file" accept="application/pdf" onChange={(e) => setTcFile(e.target.files[0])} />
             <button className="btn" onClick={uploadTC}>Upload TC</button>
             <div className="events-list">
