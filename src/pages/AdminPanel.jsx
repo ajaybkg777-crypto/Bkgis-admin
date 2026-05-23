@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import api from "../api";
 import UploadExcel from "./UploadExcel";
 import "../styles/AdminPanel.css";
@@ -17,6 +17,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [search, setSearch] = useState("");
   const [manageSearch, setManageSearch] = useState("");
+  const tcFileInputRef = useRef(null);
 
   const [events, setEvents] = useState([]);
   const [leads, setLeads] = useState([]);
@@ -181,8 +182,14 @@ export default function AdminPanel() {
     fd.append("pdf", tcFile);
     try {
       await api.post("/admin/tc", fd);
-      setForm({});
+      setForm((prev) => ({
+        ...prev,
+        tcStudentName: "",
+        tcFatherName: "",
+        tcDob: "",
+      }));
       setTcFile(null);
+      if (tcFileInputRef.current) tcFileInputRef.current.value = "";
       loadTCRecords();
       alert("TC uploaded");
     } catch (error) {
@@ -468,10 +475,10 @@ export default function AdminPanel() {
 
           <div className="section">
             <h2>Upload Transfer Certificate</h2>
-            <input className="input-field" type="text" placeholder="Student Name" onChange={(e) => updateForm("tcStudentName", e.target.value)} />
-            <input className="input-field" type="text" placeholder="Father Name" onChange={(e) => updateForm("tcFatherName", e.target.value)} />
-            <input className="input-field" type="date" onChange={(e) => updateForm("tcDob", e.target.value)} />
-            <input type="file" accept="application/pdf" onChange={(e) => setTcFile(e.target.files[0])} />
+            <input className="input-field" type="text" placeholder="Student Name" value={form.tcStudentName || ""} onChange={(e) => updateForm("tcStudentName", e.target.value)} />
+            <input className="input-field" type="text" placeholder="Father Name" value={form.tcFatherName || ""} onChange={(e) => updateForm("tcFatherName", e.target.value)} />
+            <input className="input-field" type="date" value={form.tcDob || ""} onChange={(e) => updateForm("tcDob", e.target.value)} />
+            <input ref={tcFileInputRef} type="file" accept="application/pdf" onChange={(e) => setTcFile(e.target.files[0])} />
             <button className="btn" onClick={uploadTC}>Upload TC</button>
             <div className="events-list">
               {tcRecords.map((tc) => (
