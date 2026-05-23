@@ -11,7 +11,7 @@ export default function AdminPanel() {
   const [tcForm, setTcForm] = useState({
     studentName: "",
     fatherName: "",
-    dateOfBirth: "",
+    scholarNumber: "",
   });
   const [announcementFile, setAnnouncementFile] = useState(null);
   const [galleryFile, setGalleryFile] = useState(null);
@@ -178,17 +178,17 @@ export default function AdminPanel() {
   };
 
   const uploadTC = async () => {
-    if (!tcForm.studentName || !tcForm.fatherName || !tcForm.dateOfBirth || !tcFile) {
-      return alert("Student name, father name, DOB and PDF are required");
+    if (!tcForm.studentName || !tcForm.fatherName || !tcForm.scholarNumber || !tcFile) {
+      return alert("Student name, father name, scholar number and PDF are required");
     }
     const fd = new FormData();
     fd.append("studentName", tcForm.studentName);
     fd.append("fatherName", tcForm.fatherName);
-    fd.append("dateOfBirth", tcForm.dateOfBirth);
+    fd.append("scholarNumber", tcForm.scholarNumber);
     fd.append("pdf", tcFile);
     try {
       await api.post("/admin/tc", fd);
-      setTcForm({ studentName: "", fatherName: "", dateOfBirth: "" });
+      setTcForm({ studentName: "", fatherName: "", scholarNumber: "" });
       setTcFile(null);
       if (tcFileInputRef.current) tcFileInputRef.current.value = "";
       loadTCRecords();
@@ -478,13 +478,13 @@ export default function AdminPanel() {
             <h2>Upload Transfer Certificate</h2>
             <input className="input-field" type="text" placeholder="Student Name" value={tcForm.studentName} onChange={(e) => updateTCForm("studentName", e.target.value)} />
             <input className="input-field" type="text" placeholder="Father Name" value={tcForm.fatherName} onChange={(e) => updateTCForm("fatherName", e.target.value)} />
-            <input className="input-field" type="date" value={tcForm.dateOfBirth} onChange={(e) => updateTCForm("dateOfBirth", e.target.value)} />
+            <input className="input-field" type="text" placeholder="Scholar Number" value={tcForm.scholarNumber} onChange={(e) => updateTCForm("scholarNumber", e.target.value)} />
             <input ref={tcFileInputRef} type="file" accept="application/pdf" onChange={(e) => setTcFile(e.target.files[0])} />
             <button className="btn" onClick={uploadTC}>Upload TC</button>
             <div className="events-list">
               {tcRecords.map((tc) => (
                 <div className="event-item" key={tc._id}>
-                  <span>{tc.studentName} | {tc.fatherName} | {new Date(tc.dateOfBirth).toLocaleDateString()}</span>
+                  <span>{tc.studentName} | {tc.fatherName} | Scholar No: {tc.scholarNumber || "-"}</span>
                   <button className="delete-btn" onClick={() => deleteTCRecord(tc._id)}>Delete</button>
                 </div>
               ))}
