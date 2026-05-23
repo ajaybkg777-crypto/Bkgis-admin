@@ -8,6 +8,11 @@ export default function AdminPanel() {
   if (!token) return <h2>Unauthorized</h2>;
 
   const [form, setForm] = useState({});
+  const [tcForm, setTcForm] = useState({
+    studentName: "",
+    fatherName: "",
+    dateOfBirth: "",
+  });
   const [announcementFile, setAnnouncementFile] = useState(null);
   const [galleryFile, setGalleryFile] = useState(null);
   const [documentFile, setDocumentFile] = useState(null);
@@ -27,6 +32,7 @@ export default function AdminPanel() {
   const [disclosure, setDisclosure] = useState({ documents: [], academic: [] });
 
   const updateForm = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
+  const updateTCForm = (key, value) => setTcForm((prev) => ({ ...prev, [key]: value }));
   const getErrorMessage = (error, fallback) => error?.response?.data?.message || error?.response?.data?.error || fallback;
 
   const loadEvents = async () => setEvents((await api.get("/admin/calendar")).data || []);
@@ -172,22 +178,17 @@ export default function AdminPanel() {
   };
 
   const uploadTC = async () => {
-    if (!form.tcStudentName || !form.tcFatherName || !form.tcDob || !tcFile) {
+    if (!tcForm.studentName || !tcForm.fatherName || !tcForm.dateOfBirth || !tcFile) {
       return alert("Student name, father name, DOB and PDF are required");
     }
     const fd = new FormData();
-    fd.append("studentName", form.tcStudentName);
-    fd.append("fatherName", form.tcFatherName);
-    fd.append("dateOfBirth", form.tcDob);
+    fd.append("studentName", tcForm.studentName);
+    fd.append("fatherName", tcForm.fatherName);
+    fd.append("dateOfBirth", tcForm.dateOfBirth);
     fd.append("pdf", tcFile);
     try {
       await api.post("/admin/tc", fd);
-      setForm((prev) => ({
-        ...prev,
-        tcStudentName: "",
-        tcFatherName: "",
-        tcDob: "",
-      }));
+      setTcForm({ studentName: "", fatherName: "", dateOfBirth: "" });
       setTcFile(null);
       if (tcFileInputRef.current) tcFileInputRef.current.value = "";
       loadTCRecords();
@@ -475,9 +476,9 @@ export default function AdminPanel() {
 
           <div className="section">
             <h2>Upload Transfer Certificate</h2>
-            <input className="input-field" type="text" placeholder="Student Name" value={form.tcStudentName || ""} onChange={(e) => updateForm("tcStudentName", e.target.value)} />
-            <input className="input-field" type="text" placeholder="Father Name" value={form.tcFatherName || ""} onChange={(e) => updateForm("tcFatherName", e.target.value)} />
-            <input className="input-field" type="date" value={form.tcDob || ""} onChange={(e) => updateForm("tcDob", e.target.value)} />
+            <input className="input-field" type="text" placeholder="Student Name" value={tcForm.studentName} onChange={(e) => updateTCForm("studentName", e.target.value)} />
+            <input className="input-field" type="text" placeholder="Father Name" value={tcForm.fatherName} onChange={(e) => updateTCForm("fatherName", e.target.value)} />
+            <input className="input-field" type="date" value={tcForm.dateOfBirth} onChange={(e) => updateTCForm("dateOfBirth", e.target.value)} />
             <input ref={tcFileInputRef} type="file" accept="application/pdf" onChange={(e) => setTcFile(e.target.files[0])} />
             <button className="btn" onClick={uploadTC}>Upload TC</button>
             <div className="events-list">
